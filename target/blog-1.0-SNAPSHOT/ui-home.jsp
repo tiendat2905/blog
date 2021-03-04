@@ -73,7 +73,7 @@
                             </c:forEach>
                         </div>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About</a>
+                    <li class="nav-item"><a class="nav-link" href="/blog-about?id=${about.id}">About</a>
                     </li>
 
                 </ul>
@@ -127,7 +127,7 @@
                                     <span class="category">${blog3slider.categoryName}</span> <span
                                         class="mr-2"> ${blog3slider.publishDate} </span> &bullet; <span
                                         class="ml-2"><span class="fa fa-comments"></span>
-                                        ${blog3slider.likes}</span>
+                                        ${blog3slider.views}</span>
                                 </div>
                                 <h3>${blog3slider.title}</h3>
                             </div>
@@ -150,28 +150,84 @@
         <div class="row blog-entries">
             <div class="col-md-12 col-lg-8 main-content">
                 <div class="row">
-                    <!-- Khu vuc hien thi 12 blog moi nhat list12Blogs -->
-                    <c:forEach items="${list12Blogs}" var='blog12s'>
+                    <!-- Khu vuc hien thi 8 blog moi nhat list12Blogs -->
+                    <c:forEach items="${pageBlogs}" var="pageBlog">
 
                         <div class="col-md-6">
-                            <a href="blog-single?id=${blog12s.id}" class="blog-entry element-animate"
+                            <a href="blog-single?id=${pageBlog.id}" class="blog-entry element-animate"
                                data-animate-effect="fadeIn"> <img
-                                    src="${blog12s.imageUrl}" alt="Image placeholder">
+                                    src="${pageBlog.imageUrl}" alt="Image placeholder">
                                 <div class="blog-content-body">
                                     <div class="post-meta">
-                                        <span class="category">${blog12s.categoryName}</span> <span
-                                            class="mr-2"> ${blog12s.publishDate} </span> &bullet; <span
+                                        <span class="category">${pageBlog.categoryName}</span> <span
+                                            class="mr-2"> ${pageBlog.publishDate} </span> &bullet; <span
                                             class="ml-2"><span class="fa fa-comments"></span>
-                                            ${blog12s.likes}</span>
+                                            ${pageBlog.views}</span>
                                     </div>
-                                    <h2>${blog12s.title}</h2>
+                                    <h2>${pageBlog.title}</h2>
                                 </div>
                             </a>
                         </div>
 
                     </c:forEach>
                 </div>
+
+                <div class="row">
+                    <c:set var="currentPage" value="${param.page == null ? 1 : param.page}"/>
+                    <div class="col-md-12 text-center">
+                        <nav aria-label="Page navigation" class="text-center">
+                            <ul class="pagination">
+                                <c:if test="${currentPage > 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="${pageContext.request.contextPath}/home?page=${currentPage - 1}">Prev</a>
+                                    </li>
+                                </c:if>
+
+                                <c:forEach begin="1" end="${maxPage}" var="i">
+                                    <li class="page-item">
+                                        <a class='page-link ${i == currentPage ? "active" : "" }'
+                                           href="${pageContext.request.contextPath}/home?page=${i}">
+                                                ${i}
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                                <c:if test="${currentPage + 1 <= maxPage}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="${pageContext.request.contextPath}/home?page=${currentPage + 1}">Next</a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- Khu vuc 3 post ngau nhien-->
+                <div class="row mb-5 mt-5">
+                    <div class="col-md-12">
+                        <h2 class="mb-4">More Blog Posts</h2>
+                    </div>
+                    <div class="col-md-12">
+                        <c:forEach items="${list3Random}" var='blog3s'>
+                            <div class="post-entry-horzontal">
+                                <a href="blog-single?id=${blog3s.id}">
+                                    <div class="image element-animate fadeIn element-animated"
+                                         data-animate-effect="fadeIn"
+                                         style="background-image: url(${blog3s.imageUrl});"></div>
+                                    <span class="text">
+                                        <div class="post-meta">
+                                            <span class="category">${blog3s.categoryName}</span>
+                                            <span class="mr-2">${blog3s.publishDate} </span> •
+                                            <span class="ml-2"><span
+                                                    class="fa fa-comments"></span> ${blog3s.views}</span>
+                                        </div>
+                                        <h2>${blog3s.title}</h2>
+                                    </span>
+                                </a>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
             </div>
+
 
             <!-- END main-content -->
 
@@ -187,13 +243,13 @@
                 <!-- END sidebar-box -->
                 <div class="sidebar-box">
                     <div class="bio text-center">
-                        <img src="${about.imageUrl}" alt="Image Placeholder"
+                        <img src="${about.imageUrl}" alt="Image Placeholder" style="height: 100px"
                              class="img-fluid">
                         <div class="bio-body">
                             <h2>${about.title}</h2>
                             <p>${about.shortContent}</p>
                             <p>
-                                <a href="#" class="btn btn-primary btn-sm">Read my bio</a>
+                                <a href="/blog-about?id=${about.id}" class="btn btn-primary btn-sm">Read my bio</a>
                             </p>
                             <p class="social">
                                 <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>
@@ -248,6 +304,7 @@
         </div>
     </div>
 </section>
+
 
 <footer class="site-footer">
     <div class="container">

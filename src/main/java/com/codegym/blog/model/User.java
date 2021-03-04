@@ -80,4 +80,16 @@ public class User {
     public void setIs_deleted(boolean is_deleted) {
         this.is_deleted = is_deleted;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", status=" + status +
+                ", is_deleted=" + is_deleted +
+                '}';
+    }
 }

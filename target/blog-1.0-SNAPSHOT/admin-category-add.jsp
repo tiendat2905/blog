@@ -63,7 +63,7 @@
 
 </head>
 
-<body class="animsition">
+<body class="animsition" style="opacity:1">
 <div class="page-wrapper">
     <!-- HEADER MOBILE-->
     <header class="header-mobile d-block d-lg-none">
@@ -233,7 +233,7 @@
                                         <div class="col-12 col-md-9">
                                             <textarea id="description" name="description"
                                                    placeholder="Description" value="${cate.description}" row = 4
-                                                      class="form-control"></textarea>
+                                                      required class="form-control"></textarea>
                                         </div>
                                     </div>
 

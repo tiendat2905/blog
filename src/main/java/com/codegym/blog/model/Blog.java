@@ -135,4 +135,19 @@ public class Blog {
         this.categoryName = categoryName;
     }
 
+    @Override
+    public String toString() {
+        return "Blog{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", shortContent='" + shortContent + '\'' +
+                ", fullContent='" + fullContent + '\'' +
+                ", publishDate=" + publishDate +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", views=" + views +
+                ", likes=" + likes +
+                ", idCategory=" + idCategory +
+                ", categoryName='" + categoryName + '\'' +
+                '}';
+    }
 }

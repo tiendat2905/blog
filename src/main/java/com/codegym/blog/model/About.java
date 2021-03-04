@@ -57,4 +57,15 @@ public class About {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    @Override
+    public String toString() {
+        return "About{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", shortContent='" + shortContent + '\'' +
+                ", content='" + content + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                '}';
+    }
 }

@@ -63,7 +63,7 @@
 
 </head>
 
-<body class="animsition">
+<body class="animsition" style="opacity:1">
 <div class="page-wrapper">
     <!-- HEADER MOBILE-->
     <header class="header-mobile d-block d-lg-none">
@@ -223,7 +223,7 @@
                                         </div>
                                         <div class="col-12 col-md-9">
                                             <input type="text" id="title" name="title" placeholder="Title"
-                                                   required value="${blog.title}" class="form-control">
+                                                   required class="form-control">
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -232,8 +232,8 @@
                                         </div>
                                         <div class="col-12 col-md-9">
                                             <textarea id="shortContent" name="shortContent"
-                                                      placeholder="ShortContent" value="${blog.shortContent}" row=4
-                                                      class="form-control"></textarea>
+                                                      placeholder="ShortContent" row=4
+                                                      required class="form-control"></textarea>
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -242,7 +242,7 @@
                                                 Content</label>
                                         </div>
                                         <div class="col-12 col-md-9">
-                                            <textarea name="fullContent" id="fullContent" rows="9" placeholder="Full Content" value="${blog.fullContent}" class="form-control"></textarea>
+                                            <textarea name="fullContent" id="fullContent" rows="9" placeholder="Full Content" required  class="form-control"></textarea>
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -251,7 +251,7 @@
                                         </div>
                                         <div class="col-12 col-md-9">
                                             <input type="text" id="imageUrl" name="imageUrl" placeholder="ImageUrl"
-                                                   required value="${blog.imageUrl}" class="form-control">
+                                                   required class="form-control">
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -331,9 +331,19 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
 <script>
-    $('#summernote').summernote({
+    $('#fullContent').summernote({
         tabsize: 2,
-        height: 100
+        height: 100,
+        toolbar: [
+            // [groupName, [list of button]]
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['fontsize', ['fontsize']],
+            ['fontName', 'Josefin Sans'],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']]
+        ]
     });
 </script>
 </body>

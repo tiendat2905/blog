@@ -13,9 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name = "AdminBlog",urlPatterns = "/admin-blog")
+@WebServlet(name = "AdminBlog", urlPatterns = "/admin-blog")
 public class AdminBlog extends HttpServlet {
 
     BlogService blogService = new BlogService();
@@ -27,12 +28,6 @@ public class AdminBlog extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
 
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
-        if (username == null || username.isEmpty()) {
-            response.sendRedirect("authentication");
-            return;
-        }
 
         String action = request.getParameter("action");
         if (action == null)
@@ -72,6 +67,13 @@ public class AdminBlog extends HttpServlet {
             case "delete":
                 doDeleteView(request, response);
                 break;
+            case "find":
+                try {
+                    findByName(request, response);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                break;
             default:
                 showListView(request, response);
                 break;
@@ -79,11 +81,9 @@ public class AdminBlog extends HttpServlet {
     }
 
     private void showAddView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        System.out.println("ok");
-//        Blog blog = new Blog();
-//        request.setAttribute("blog", blog);
+
         List<Category> categoryList = categoryService.findAll();
-        request.setAttribute("categoryList",categoryList);
+        request.setAttribute("categoryList", categoryList);
 
         RequestDispatcher rd = request.getRequestDispatcher("admin-blog-add.jsp");
         rd.forward(request, response);
@@ -93,7 +93,7 @@ public class AdminBlog extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
 
         List<Category> categoryList = categoryService.findAll();
-        request.setAttribute("categoryList",categoryList);
+        request.setAttribute("categoryList", categoryList);
 
         Blog blog = blogService.findById(id);
         if (blog != null) {
@@ -101,7 +101,7 @@ public class AdminBlog extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("admin-blog-edit.jsp");
             rd.forward(request, response);
         } else {
-            response.sendRedirect("404");
+            response.sendRedirect("error404.jsp");
         }
 
     }
@@ -129,14 +129,14 @@ public class AdminBlog extends HttpServlet {
         String imageUrl = request.getParameter("imageUrl");
         int idCategory = Integer.parseInt(request.getParameter("category"));
 
-        Blog blog = new Blog(0, title, shortContent,fullContent,imageUrl,idCategory);
+        Blog blog = new Blog(0, title, shortContent, fullContent, imageUrl, idCategory);
         System.out.println("test1: " + blog);
         blogService.save(blog);
         RequestDispatcher dispatcher = request.getRequestDispatcher("admin-blog-add.jsp");
         List<Category> categoryList = categoryService.findAll();
         request.setAttribute("blog", blog);
         request.setAttribute("message", "Thêm mới thành công");
-        request.setAttribute("categoryList",categoryList);
+        request.setAttribute("categoryList", categoryList);
         dispatcher.forward(request, response);
 
     }
@@ -149,13 +149,27 @@ public class AdminBlog extends HttpServlet {
         String imageUrl = request.getParameter("imageUrl");
         int idCategory = Integer.parseInt(request.getParameter("category"));
 
-        Blog blog = new Blog(id, title, shortContent,fullContent,imageUrl,idCategory);
+        Blog blog = new Blog(id, title, shortContent, fullContent, imageUrl, idCategory);
         blogService.update(blog);
         RequestDispatcher dispatcher = request.getRequestDispatcher("admin-blog-edit.jsp");
         List<Category> categoryList = categoryService.findAll();
         request.setAttribute("blog", blog);
         request.setAttribute("message", "Cập nhật thành công");
-        request.setAttribute("categoryList",categoryList);
+        request.setAttribute("categoryList", categoryList);
+        dispatcher.forward(request, response);
+    }
+
+    private void findByName(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        String name = request.getParameter("name");
+        List<Blog> blogList = blogService.findByName(name);
+        if (!blogList.isEmpty()) {
+            request.setAttribute("list", blogList);
+        } else {
+            request.setAttribute("message", " File Not Found...");
+        }
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("admin-blog.jsp");
         dispatcher.forward(request, response);
     }
 }

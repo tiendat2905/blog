@@ -59,7 +59,7 @@
 
 </head>
 
-<body class="animsition">
+<body class="animsition" style="opacity:1">
 <div class="page-wrapper">
     <!-- HEADER MOBILE-->
     <header class="header-mobile d-block d-lg-none">
@@ -232,7 +232,7 @@
                                         <div class="col-12 col-md-9">
                                             <input type="text" id="description" name="description"
                                                    placeholder="Description" value="${cate.description}"
-                                                   class="form-control">
+                                                   required class="form-control">
                                         </div>
                                     </div>
 
@@ -303,7 +303,7 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
 <script>
-    $('#description').summernote({
+    $('#summernote').summernote({
         tabsize: 2,
         height: 100
     });

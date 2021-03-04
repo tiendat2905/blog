@@ -1,7 +1,7 @@
 <!-- COPPY CODE TU TEMPLATE COOLADMIN, PAGE INDEX -->
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -57,7 +57,7 @@
 
 </head>
 
-<body class="animsition">
+<body class="animsition" style="opacity:1">
 <div class="page-wrapper">
     <!-- HEADER MOBILE-->
     <header class="header-mobile d-block d-lg-none">
@@ -65,7 +65,7 @@
             <div class="container-fluid">
                 <div class="header-mobile-inner">
                     <a class="logo" href="/dashboard"> <img
-                            src="admin-assets/images/icon/logo.png" alt="CoolAdmin" />
+                            src="admin-assets/images/icon/logo.png" alt="CoolAdmin"/>
                     </a>
                     <button class="hamburger hamburger--slider" type="button">
 							<span class="hamburger-box"> <span class="hamburger-inner"></span>
@@ -97,7 +97,7 @@
     <aside class="menu-sidebar d-none d-lg-block">
         <div class="logo">
             <a href="/dashboard"> <img src="admin-assets/images/icon/logo.png"
-                              alt="Cool Admin" />
+                                       alt="Cool Admin"/>
             </a>
         </div>
         <div class="menu-sidebar__content js-scrollbar1">
@@ -132,7 +132,7 @@
                                 <div class="account-item clearfix js-item-menu">
                                     <div class="image">
                                         <img src="admin-assets/images/icon/avatar-01.jpg"
-                                             alt="${sessionScope.user.fullName}" />
+                                             alt="${sessionScope.user.fullName}"/>
                                     </div>
                                     <div class="content">
                                         <a class="js-acc-btn" href="#">${sessionScope.user.fullName}</a>
@@ -142,7 +142,7 @@
                                             <div class="image">
                                                 <a href="#"> <img
                                                         src="admin-assets/images/icon/avatar-01.jpg"
-                                                        alt="John Doe" />
+                                                        alt="John Doe"/>
                                                 </a>
                                             </div>
                                             <div class="content">
@@ -184,15 +184,24 @@
                         <div class="col-12 col-md-12">
                             <h3 class="title-5 m-b-35">Blog Manager</h3>
                         </div>
-                        <div class="table-data__tool">
+                        <div class="table-data__tool col-12">
                             <div class="table-data__tool-left">
                                 <a href="admin-blog?action=add"
                                    class="au-btn au-btn-icon au-btn--green au-btn--small"> <i
                                         class="zmdi zmdi-plus"></i>add item
                                 </a>
+                            </div>
+                            <div class="table-data__tool-right">
+                                <form class="form-header" action="#">
+                                    <input type="hidden" name="action" value="find"/>
+                                    <input class="au-input au-input--xl" type="text" name="name"
+                                           placeholder="Search">
+                                    <button class="au-btn--submit" type="submit">
+                                        <i class="zmdi zmdi-search"></i>
+                                    </button>
+                                </form>
 
                             </div>
-                            <div class="table-data__tool-right"></div>
                         </div>
                     </div>
                     <div class="row">
@@ -229,6 +238,7 @@
                                                class="item" data-toggle="tooltip" data-placement="top"
                                                title="Edit"> <i class="zmdi zmdi-edit"></i>
                                             </a> <a href="admin-blog?action=delete&id=${blog.id}"
+                                                    onclick="return confirm('Nếu bạn xóa mục ${blog.categoryName} thì những bài post liên quan tới mục ${blog.categoryName} sẽ bị xóa theo....Are You Sure...!!!')"
                                                     class="item" data-toggle="tooltip" data-placement="top"
                                                     title="Delete"> <i class="zmdi zmdi-delete"></i>
                                         </a> <a href="admin-blog?action=view&id=${blog.id}"

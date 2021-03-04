@@ -10,12 +10,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IUserDao implements IBaseDao<User> {
+public class UserDao implements IBaseDao<User> {
+
     private static final String FINDALL_SQL = "SELECT * FROM users;";
+
     private static final String FINDBYID_SQL = "SELECT * FROM users where id = ?;";
+
     private static final String SAVE_SQL = "INSERT INTO users(username,password,fullName,status) VALUES (?,?,?,?);";
+
     private static final String UPDATE_SQL = "UPDATE users SET username = ?,fullname = ? WHERE id = ?;";
+
     private static final String DELETE_SQL = "DELETE FROM users where id = ?;";
+
     private static final String FINDBYUP_SQL = "SELECT * FROM users WHERE username=? AND password=?";
 
     @Override

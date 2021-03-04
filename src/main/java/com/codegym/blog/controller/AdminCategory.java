@@ -1,5 +1,6 @@
 package com.codegym.blog.controller;
 
+import com.codegym.blog.model.Blog;
 import com.codegym.blog.model.Category;
 import com.codegym.blog.service.CategoryService;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "AdminCategory", urlPatterns = "/admin-category")
@@ -23,12 +25,6 @@ public class AdminCategory extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
 
-        HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
-        if (username == null || username.isEmpty()) {
-            response.sendRedirect("authentication");
-            return;
-        }
 
         String action = request.getParameter("action");
         if (action == null)
@@ -68,6 +64,13 @@ public class AdminCategory extends HttpServlet {
             case "delete":
                 doDeleteView(request, response);
                 break;
+            case "find":
+                try {
+                    findByName(request, response);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                break;
             default:
                 showListView(request, response);
                 break;
@@ -75,12 +78,15 @@ public class AdminCategory extends HttpServlet {
     }
 
     private void showAddView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("ok");
-        Category category = new Category();
-        request.setAttribute("cate", category);
+        try {
+            Category category = new Category();
+            request.setAttribute("cate", category);
 
-        RequestDispatcher rd = request.getRequestDispatcher("admin-category-add.jsp");
-        rd.forward(request, response);
+            RequestDispatcher rd = request.getRequestDispatcher("admin-category-add.jsp");
+            rd.forward(request, response);
+        } catch (ServletException | IOException e) {
+            response.sendRedirect("error404.jsp");
+        }
     }
 
     private void showEditView(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -92,7 +98,7 @@ public class AdminCategory extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("admin-category-edit.jsp");
             rd.forward(request, response);
         } else {
-            response.sendRedirect("404");
+            response.sendRedirect("error404.jsp");
         }
 
     }
@@ -137,6 +143,20 @@ public class AdminCategory extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("admin-category-edit.jsp");
         request.setAttribute("cate", category);
         request.setAttribute("message", "Cập nhật thành công");
+        dispatcher.forward(request, response);
+    }
+
+    private void findByName(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        String name = request.getParameter("name");
+        List<Category> categoryList = categoryService.findByName(name);
+
+        if (!categoryList.isEmpty()) {
+            request.setAttribute("list", categoryList);
+        } else {
+            request.setAttribute("message", " File Not Found...");
+        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("admin-category.jsp");
         dispatcher.forward(request, response);
     }
 }

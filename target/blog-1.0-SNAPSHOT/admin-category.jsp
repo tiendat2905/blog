@@ -57,7 +57,7 @@
 
 </head>
 
-<body class="animsition">
+<body class="animsition" style="opacity:1">
 <div class="page-wrapper">
     <!-- HEADER MOBILE-->
     <header class="header-mobile d-block d-lg-none">
@@ -184,7 +184,7 @@
                         <div class="col-12 col-md-12">
                             <h3 class="title-5 m-b-35">Category Manager</h3>
                         </div>
-                        <div class="table-data__tool">
+                        <div class="table-data__tool col-12">
                             <div class="table-data__tool-left">
                                 <a href="admin-category?action=add"
                                    class="au-btn au-btn-icon au-btn--green au-btn--small"> <i
@@ -192,7 +192,16 @@
                                 </a>
 
                             </div>
-                            <div class="table-data__tool-right"></div>
+                            <div class="table-data__tool-right">
+                                <form class="form-header" action="#">
+                                    <input type="hidden" name="action" value="find"/>
+                                    <input class="au-input au-input--xl" type="text" name="name"
+                                           placeholder="Search">
+                                    <button class="au-btn--submit" type="submit">
+                                        <i class="zmdi zmdi-search"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -225,6 +234,7 @@
                                                class="item" data-toggle="tooltip" data-placement="top"
                                                title="Edit"> <i class="zmdi zmdi-edit"></i>
                                             </a> <a href="admin-category?action=delete&id=${cate.id}"
+                                                    onclick="return confirm('Nếu bạn xóa mục ${cate.nameCategory} thì những bài post liên quan tới mục ${cate.nameCategory} sẽ bị xóa theo....Are You Sure...!!!')"
                                                     class="item" data-toggle="tooltip" data-placement="top"
                                                     title="Delete"> <i class="zmdi zmdi-delete"></i>
                                         </a> <a href="admin-category?action=view&id=${cate.id}"

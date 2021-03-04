@@ -23,16 +23,18 @@ public class AdminDashboard extends HttpServlet {
         //fix unicode
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
+        try {
+            HttpSession session = request.getSession();
 
-        HttpSession session = request.getSession();
-
-        String username = (String) session.getAttribute("username");
-        if (username == null || username.isEmpty()) {
-            response.sendRedirect("authentication");
-        } else {
-            RequestDispatcher rd = request.getRequestDispatcher("admin-dashboard.jsp");
-            rd.forward(request, response);
+            String username = (String) session.getAttribute("username");
+            if (username == null || username.isEmpty()) {
+                response.sendRedirect("authentication");
+            } else {
+                RequestDispatcher rd = request.getRequestDispatcher("admin-dashboard.jsp");
+                rd.forward(request, response);
+            }
+        } catch (IOException | ServletException e) {
+            response.sendRedirect("error404.jsp");
         }
-
     }
 }

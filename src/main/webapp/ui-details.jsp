@@ -3,29 +3,6 @@
          pageEncoding="UTF-8" %>
 <!doctype html>
 <html lang="en">
-<head>
-    <title>Colorlib Balita &mdash; Minimal Blog Template</title>
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link
-            href="https://fonts.googleapis.com/css?family=Josefin+Sans:300, 400,700"
-            rel="stylesheet">
-
-    <link rel="stylesheet" href="ui-assets/css/bootstrap.css">
-    <link rel="stylesheet" href="ui-assets/css/animate.css">
-    <link rel="stylesheet" href="ui-assets/css/owl.carousel.min.css">
-
-    <link rel="stylesheet"
-          href="ui-assets/fonts/ionicons/css/ionicons.min.css">
-    <link rel="stylesheet"
-          href="ui-assets/fonts/fontawesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="ui-assets/fonts/flaticon/font/flaticon.css">
-
-    <!-- Theme Style -->
-    <link rel="stylesheet" href="ui-assets/css/style.css">
-</head>
 <body>
 
 
@@ -73,7 +50,7 @@
                             </c:forEach>
                         </div>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About</a>
+                    <li class="nav-item"><a class="nav-link" href="/blog-about?id=${about.id}">About</a>
                     </li>
 
                 </ul>
@@ -106,6 +83,50 @@
                     </div>
                     <p>${blog.fullContent}</p>
                 </div>
+
+                <!--Khu vuc comment -->
+                <div class="pt-5">
+                    <h3 class="mb-5">Comments</h3>
+                    <ul class="comment-list">
+                        <c:forEach items="${commentList}" var="comment">
+                            <li class="comment">
+                                <div class="vcard">
+                                    <img src="https://lovicouple.com/wp-content/uploads/2019/12/vai-avatar-cap-cho-cac-ban-de-facebook-25.jpg" alt="Image placeholder">
+                                </div>
+                                <div class="comment-body">
+                                    <h3>${comment.username}</h3>
+                                    <div class="meta">${comment.pushDate}</div>
+                                    <p>${comment.comment}</p>
+                                </div>
+                            </li>
+                        </c:forEach>
+
+                    </ul>
+                    <!-- END comment-list -->
+
+                    <div class="comment-form-wrap pt-5">
+                        <h3 class="mb-5">Leave a comment</h3>
+                        <form method="post" class="p-5 bg-light">
+                            <input type="hidden" name="idBlog" value="${param.id}">
+                            <div class="form-group">
+                                <label for="username">Name *</label>
+                                <input name="username" type="text" class="form-control" id="username">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input name="email" type="email" class="form-control" id="email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="comment">Message</label>
+                                <textarea name="comment" id="comment" cols="30" rows="10" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Post Comment" class="btn btn-primary">
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
 
             <!--sidebar-->
@@ -121,13 +142,13 @@
 
                 <div class="sidebar-box">
                     <div class="bio text-center">
-                        <img src="${about.imageUrl}" alt="Image Placeholder"
+                        <img src="${about.imageUrl}" alt="Image Placeholder"  style="height: 100px"
                              class="img-fluid">
                         <div class="bio-body">
                             <h2>${about.title}</h2>
                             <p>${about.shortContent}</p>
                             <p>
-                                <a href="#" class="btn btn-primary btn-sm">Read my bio</a>
+                                <a href="/blog-about?id=${about.id}" class="btn btn-primary btn-sm">Read my bio</a>
                             </p>
                             <p class="social">
                                 <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>
@@ -173,9 +194,36 @@
             </div>
         </div>
     </div>
-    </div>
+
 </section>
 
+<!--3 post ngau nhien -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-3 ">Related Post</h2>
+        </div>
+        <c:forEach items='${requestScope["listTop3Random"]}' var='blog3slider'>
+            <div class="col-md-6 col-lg-4">
+                <div>
+                    <a href="blog-single?id=${blog3slider.id}"
+                       class="a-block d-flex align-items-center height-md"
+                       style="background-image: url('${blog3slider.imageUrl}');">
+                        <div class="text">
+                            <div class="post-meta">
+                                <span class="category">${blog3slider.categoryName}</span> <span
+                                    class="mr-2"> ${blog3slider.publishDate} </span> &bullet; <span
+                                    class="ml-2"><span class="fa fa-comments"></span>
+                                    ${blog3slider.likes}</span>
+                            </div>
+                            <h3>${blog3slider.title}</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+</div>
 
 <footer class="site-footer">
     <div class="container">
@@ -215,7 +263,35 @@
 <script src="ui-assets/js/jquery.waypoints.min.js"></script>
 <script src="ui-assets/js/jquery.stellar.min.js"></script>
 
+<!--sử lý font bằng js -->
+<script>
+    Array.from(document.getElementsByClassName("post-content-body")[0].children)
+        .forEach(tag => console.log(tag.style.fontFamily = ""))
+</script>
 
 <script src="ui-assets/js/main.js"></script>
 </body>
+<head>
+    <title>Colorlib Balita &mdash; Minimal Blog Template</title>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link
+            href="https://fonts.googleapis.com/css?family=Josefin+Sans:300, 400,700"
+            rel="stylesheet">
+
+    <link rel="stylesheet" href="ui-assets/css/bootstrap.css">
+    <link rel="stylesheet" href="ui-assets/css/animate.css">
+    <link rel="stylesheet" href="ui-assets/css/owl.carousel.min.css">
+
+    <link rel="stylesheet"
+          href="ui-assets/fonts/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet"
+          href="ui-assets/fonts/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="ui-assets/fonts/flaticon/font/flaticon.css">
+
+    <!-- Theme Style -->
+    <link rel="stylesheet" href="ui-assets/css/style.css">
+</head>
 </html>

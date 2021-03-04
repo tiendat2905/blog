@@ -73,7 +73,7 @@
                             </c:forEach>
                         </div>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About</a>
+                    <li class="nav-item"><a class="nav-link" href="/blog-about?id=${about.id}">About</a>
                     </li>
 
                 </ul>
@@ -96,23 +96,52 @@
             <div class="col-md-12 col-lg-8 main-content">
                 <div class="row mb-5 mt-5">
                     <div class="col-md-12">
-                        <c:forEach items='${requestScope["listBlog"]}' var='blogMain'>
+                        <c:forEach items='${requestScope["pageBlogs"]}' var='pageBlogs'>
                             <div class="post-entry-horzontal">
-                                <a href="blog-single?id=${blogMain.id}">
+                                <a href="blog-single?id=${pageBlogs.id}">
                                     <div class="image element-animate fadeIn element-animated"
                                          data-animate-effect="fadeIn"
-                                         style="background-image: url(${blogMain.imageUrl});"></div>
+                                         style="background-image: url(${pageBlogs.imageUrl});"></div>
                                     <span class="text">
                                     <div class="post-meta">
-                                        <span class="category">${blogMain.categoryName}</span>
-                                        <span class="mr-2">${blogMain.publishDate} </span> &bullet;
-                                        <span class="ml-2"><span class="fa fa-comments"></span> ${blogMain.views}</span>
+                                        <span class="category">${pageBlogs.categoryName}</span>
+                                        <span class="mr-2">${pageBlogs.publishDate} </span> &bullet;
+                                        <span class="ml-2"><span class="fa fa-comments"></span> ${pageBlogs.views}</span>
                                     </div>
-                                    <h2>${blogMain.title}</h2>
+                                    <h2>${pageBlogs.title}</h2>
                                     </span>
                                 </a>
                             </div>
                         </c:forEach>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <c:set var="currentPage" value="${param.page == null ? 1 : param.page}"/>
+                    <div class="col-md-12 text-center">
+                        <nav aria-label="Page navigation" class="text-center">
+                            <ul class="pagination">
+                                <c:if test="${currentPage > 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="${pageContext.request.contextPath}/category?id=${param.id}&page=${currentPage - 1}">Prev</a>
+                                    </li>
+                                </c:if>
+
+                                <c:forEach begin="1" end="${maxPage}" var="i">
+                                    <li class="page-item">
+                                        <a class='page-link ${i == currentPage ? "active" : "" }'
+                                           href="${pageContext.request.contextPath}/category?id=${param.id}&page=${i}">
+                                                ${i}
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                                <c:if test="${currentPage + 1 <= maxPage}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="${pageContext.request.contextPath}/category?id=${param.id}&page=${currentPage + 1}">Next</a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -130,13 +159,13 @@
 
                 <div class="sidebar-box">
                     <div class="bio text-center">
-                        <img src="${about.imageUrl}" alt="Image Placeholder"
+                        <img src="${about.imageUrl}" alt="Image Placeholder"  style="height: 100px"
                              class="img-fluid">
                         <div class="bio-body">
                             <h2>${about.title}</h2>
                             <p>${about.shortContent}</p>
                             <p>
-                                <a href="#" class="btn btn-primary btn-sm">Read my bio</a>
+                                <a href="/blog-about?id=${about.id}" class="btn btn-primary btn-sm">Read my bio</a>
                             </p>
                             <p class="social">
                                 <a href="#" class="p-2"><span class="fa fa-facebook"></span></a>

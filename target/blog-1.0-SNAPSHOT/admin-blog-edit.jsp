@@ -63,7 +63,7 @@
 
 </head>
 
-<body class="animsition">
+<body class="animsition" style="opacity:1">
 <div class="page-wrapper">
     <!-- HEADER MOBILE-->
     <header class="header-mobile d-block d-lg-none">
@@ -102,7 +102,7 @@
     <aside class="menu-sidebar d-none d-lg-block">
         <div class="logo">
             <a href="/dashboard"> <img src="admin-assets/images/icon/logo.png"
-                              alt="Cool Admin"/>
+                                       alt="Cool Admin"/>
             </a>
         </div>
         <div class="menu-sidebar__content js-scrollbar1">
@@ -180,7 +180,7 @@
             </div>
         </header>
         <!-- HEADER DESKTOP-->
-        <h1>OK</h1>
+
         <!-- MAIN CONTENT-->
         <div class="main-content">
             <div class="section__content section__content--p30">
@@ -209,6 +209,7 @@
                         </c:if>
                     </div>
                     <div class="row">
+                        
                         <!-- FORM ADD-->
                         <div class="col-12 col-md-12">
                             <form action="/admin-blog?action=edit" method="post" class="form-horizontal">
@@ -230,16 +231,16 @@
                                         </div>
                                         <div class="col-12 col-md-9">
                                             <input type="text" id="title" name="title" placeholder="Title"
-                                                   required value="${blog.title}" class="form-control">
+                                                   required value='${blog.title}' class="form-control">
                                         </div>
                                     </div>
                                     <div class="row form-group">
                                         <div class="col col-md-3">
-                                            <label for="shortContent" class=" form-control-label">ShortContent</label>
+                                            <label for="shortContent"  class=" form-control-label">ShortContent</label>
                                         </div>
                                         <div class="col-12 col-md-9">
                                             <textarea id="shortContent" name="shortContent"
-                                                       row=4
+                                                      row=4 required
                                                       class="form-control">${blog.shortContent}</textarea>
                                         </div>
                                     </div>
@@ -249,7 +250,8 @@
                                                 Content</label>
                                         </div>
                                         <div class="col-12 col-md-9">
-                                            <textarea name="fullContent" id="fullContent" rows="9" class="form-control">${blog.fullContent}</textarea>
+                                            <textarea name="fullContent" id="fullContent" rows="9"
+                                                      required class="form-control">${blog.fullContent}</textarea>
                                         </div>
                                     </div>
                                     <div class="row form-group">
@@ -267,9 +269,16 @@
                                         </div>
                                         <div class="col-12 col-md-9">
                                             <select class="form-control" name="category" required>
-                                                <option value="">Vui lòng chọn ...</option>
-                                                <c:forEach items="${categoryList}" var="category">
-                                                    <option value="${category.id}">${category.nameCategory}</option>
+                                                <c:forEach var="category" items='${categoryList}'>
+<%--                                                    <c:if test='${blog.idCategory == category.id}'>--%>
+<%--                                                        <option value='${category.id}' selected>${category.nameCategory}</option>--%>
+<%--                                                    </c:if>--%>
+<%--                                                    <c:if test="${blog.idCategory != category.id}">--%>
+<%--                                                        <option value='${category.id}'>${category.nameCategory}</option>--%>
+<%--                                                    </c:if>--%>
+                                                    <option value='${category.id}' ${blog.idCategory == category.id ? "selected" : ""} >
+                                                            ${category.nameCategory}
+                                                    </option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -344,7 +353,17 @@
 <script>
     $('#fullContent').summernote({
         tabsize: 2,
-        height: 100
+        height: 100,
+        toolbar: [
+            // [groupName, [list of button]]
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['fontsize', ['fontsize']],
+            ['fontName', 'Josefin Sans'],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']]
+        ]
     });
 </script>
 </body>

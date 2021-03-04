@@ -1,40 +1,40 @@
 package com.codegym.blog.service;
 
-import com.codegym.blog.dao.IUserDao;
+import com.codegym.blog.dao.UserDao;
 import com.codegym.blog.model.User;
 
 import java.util.List;
 
 public class UserService implements BaseService<User> {
 
-    IUserDao iUserDao = new IUserDao();
+    UserDao userDao = new UserDao();
 
     @Override
     public List<User> findAll() {
-        return iUserDao.findAll();
+        return userDao.findAll();
     }
 
     @Override
     public User findById(int id) {
-        return iUserDao.findById(id);
+        return userDao.findById(id);
     }
 
     public User findByUsernamePassword(String username, String password) {
-        return iUserDao.findByUsernamePassword(username, password);
+        return userDao.findByUsernamePassword(username, password);
     }
 
     @Override
     public void save(User object) {
-        iUserDao.save(object);
+        userDao.save(object);
     }
 
     @Override
     public void update(User object) {
-        iUserDao.update(object);
+        userDao.update(object);
     }
 
     @Override
     public void delete(int id) {
-        iUserDao.delete(id);
+        userDao.delete(id);
     }
 }

@@ -1,5 +1,6 @@
 package com.codegym.blog.dao;
 
+import com.codegym.blog.model.Blog;
 import com.codegym.blog.model.Category;
 
 import java.sql.Connection;
@@ -7,16 +8,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class ICategoryDao implements IBaseDao<Category> {
+public class CategoryDao implements IBaseDao<Category> {
     private static final String FINDALL_SQL = "SELECT * FROM categories";
+
     private static final String FINDBYID_SQL = "SELECT * FROM categories WHERE id=?";
 
-
     private static final String SAVE_SQL = "INSERT INTO categories(nameCategory,description) VALUES(?,?)";
+
     private static final String UPDATE_SQL = "UPDATE categories SET nameCategory=?,description=? WHERE id=?";
+
     private static final String DELETE_SQL = "DELETE FROM categories WHERE id=?";
+
+    private static final String FINDBYNAME_SQL = "SELECT * FROM categories WHERE categories.nameCategory LIKE concat ('%',?,'%')";
+
+    private static final String LIST_PAGE = "select blogs.*,categories.nameCategory as categoryName from blogs INNER JOIN categories ON blogs.`idCategory` = categories.id order by publishDate desc limit 8 offset ?;";
 
     @Override
     public List<Category> findAll() {
@@ -106,4 +114,27 @@ public class ICategoryDao implements IBaseDao<Category> {
             throwables.printStackTrace();
         }
     }
+
+    public List<Category> findByName(String keyword) {
+        List<Category> categoryList = new ArrayList<>();
+
+        try (Connection connection = DaoUtils.getConnection();
+             PreparedStatement st = connection.prepareStatement(FINDBYNAME_SQL)) {
+            st.setString(1, keyword);
+
+            ResultSet resultSet = st.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("nameCategory");
+                String description = resultSet.getString("description");
+               Category category = new Category(id, name, description);
+               categoryList.add(category);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return categoryList;
+    }
+
 }
